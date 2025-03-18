@@ -1,6 +1,12 @@
 import { Document } from "@/types";
 import DocumentTableWrapper from '../components/DocumentTableWrapper';
 
+// Function to get today's date in yyyy-mm-dd format
+const getTodayFormatted = () => {
+  const today = new Date();
+  return today.toISOString().split('T')[0];
+};
+
 async function getDocumentData() {
   try {
     const response = await fetch('https://alpha.boga.co.id/WebAPIAlpha/api/OCRDocument/GetOCRChangesData', {
@@ -9,8 +15,8 @@ async function getDocumentData() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        StartDate: "2025-03-10",
-        EndDate: "2025-03-20"
+        StartDate: "2025-01-01",
+        EndDate: getTodayFormatted()
       }),
       cache: 'no-store'
     });

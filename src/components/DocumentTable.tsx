@@ -21,6 +21,10 @@ const ValueCell = ({ value }: { value: Value }) => {
 };
 
 const columns = [
+  columnHelper.accessor("vendorName", {
+    header: "Vendor",
+    cell: (info) => <ValueCell value={info.getValue()} />,
+  }),
   columnHelper.accessor("transactionId", {
     header: "Transaction ID",
     cell: (info) => <div className="px-4 py-2 font-medium text-slate-900">{info.getValue()}</div>,
@@ -29,32 +33,17 @@ const columns = [
     header: "Document",
     cell: (info) => <div className="px-4 py-2 max-w-md truncate text-slate-900" title={info.getValue()}>{info.getValue()}</div>,
   }),
-  columnHelper.accessor("date", {
-    header: "Date",
-    cell: (info) => {
-      const date = info.getValue();
-      try {
-        return <div className="px-4 py-2 text-slate-900">{format(new Date(date), "dd/MM/yyyy")}</div>;
-      } catch {
-        return <div className="px-4 py-2 text-slate-900">{date}</div>;
-      }
-    },
-  }),
   // Header columns
   columnHelper.accessor("companyId", {
-    header: "Company ID",
+    header: "Company",
     cell: (info) => <ValueCell value={info.getValue()} />,
   }),
   columnHelper.accessor("brandId", {
-    header: "Brand ID",
+    header: "Brand",
     cell: (info) => <ValueCell value={info.getValue()} />,
   }),
   columnHelper.accessor("outletId", {
-    header: "Outlet ID",
-    cell: (info) => <ValueCell value={info.getValue()} />,
-  }),
-  columnHelper.accessor("vendorName", {
-    header: "Vendor Name",
+    header: "Outlet",
     cell: (info) => <ValueCell value={info.getValue()} />,
   }),
   columnHelper.accessor("currency", {

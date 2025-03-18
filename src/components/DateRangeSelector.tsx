@@ -8,17 +8,42 @@ interface DateRangeSelectorProps {
   defaultEndDate?: string;
 }
 
+// Function to get today's date in yyyy-mm-dd format
+const getTodayFormatted = () => {
+  const today = new Date();
+  return today.toISOString().split('T')[0];
+};
+
 export function DateRangeSelector({ 
   onDateChange,
-  defaultStartDate = "2025-03-10",
-  defaultEndDate = "2025-03-20"
+  defaultStartDate = "2025-01-01",
+  defaultEndDate = getTodayFormatted()
 }: DateRangeSelectorProps) {
   const [startDate, setStartDate] = useState(defaultStartDate);
   const [endDate, setEndDate] = useState(defaultEndDate);
 
+  const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Ensure the date is in yyyy-mm-dd format
+    if (/^\d{4}-\d{2}-\d{2}$/.test(value) || value === '') {
+      setStartDate(value);
+    }
+  };
+
+  const handleEndDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Ensure the date is in yyyy-mm-dd format
+    if (/^\d{4}-\d{2}-\d{2}$/.test(value) || value === '') {
+      setEndDate(value);
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onDateChange(startDate, endDate);
+    if (startDate && endDate) {
+      console.log(startDate, endDate);
+      onDateChange(startDate, endDate);
+    }
   };
 
   return (
@@ -31,7 +56,9 @@ export function DateRangeSelector({
           type="date"
           id="startDate"
           value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
+          onChange={handleStartDateChange}
+          pattern="\d{4}-\d{2}-\d{2}"
+          required
           className="block w-full px-3 py-2 border border-slate-200 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900"
         />
       </div>
@@ -43,7 +70,9 @@ export function DateRangeSelector({
           type="date"
           id="endDate"
           value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
+          onChange={handleEndDateChange}
+          pattern="\d{4}-\d{2}-\d{2}"
+          required
           className="block w-full px-3 py-2 border border-slate-200 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900"
         />
       </div>
@@ -51,7 +80,7 @@ export function DateRangeSelector({
         type="submit"
         className="px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
       >
-        Apply Filter
+        Filter
       </button>
     </form>
   );
